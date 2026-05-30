@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Community Event Portal</title>
+  <style>
+    /* basic CSS – only what is needed */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+      line-height: 1.4;
+    }
+    .navbar {
+      background: #1e3a5f;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      display: flex;
+      gap: 25px;
+      justify-content: center;
+      flex-wrap: wrap;
+      z-index: 100;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+    }
+    section {
+      background: white;
+      margin-bottom: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      scroll-margin-top: 80px;
+    }
+    h2 {
+      margin-bottom: 15px;
+      border-left: 4px solid #1e3a5f;
+      padding-left: 12px;
+    }
+    #welcomeBanner {
+      background: #2c7cb6;
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .highlight {
+      background: #ffd966;
+      color: #1e3a5f;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .gallery-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .gallery-table td {
+      padding: 12px;
+      text-align: center;
+      vertical-align: top;
+    }
+    .img-border {
+      border: 3px solid #1e3a5f;
+      border-radius: 8px;
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .caption {
+      margin-top: 8px;
+      font-weight: 500;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background: #1e3a5f;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .output-msg {
+      background: #e9f0f5;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 12px;
+    }
+    .fee-box {
+      background: #f0f4f9;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    .char-counter {
+      font-size: 13px;
+      text-align: right;
+      margin-top: -8px;
+      margin-bottom: 10px;
+    }
+    .error-msg {
+      color: #c0392b;
+      font-size: 12px;
+      margin-top: -8px;
+    }
+    .geo-result {
+      background: #f4f9fe;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal img {
+      max-width: 85%;
+      max-height: 85%;
+      border-radius: 8px;
+      border: 2px solid white;
+    }
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    @media (max-width: 700px) {
+      .gallery-table, .gallery-table tbody, .gallery-table tr, .gallery-table td {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MODAL for image enlarge (onclick) -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+  <span class="close-modal">&times;</span>
+  <img id="modalImg" src="" alt="Enlarged event">
+</div>
+
+<!-- ==================== NAVIGATION ==================== -->
+<nav class="navbar">
+  <a href="#home">Home</a>
+  <a href="#events">Events</a>
+  <a href="#registration">Registration</a>
+  <a href="#feedback">Feedback</a>
+  <a href="#contact">Contact</a>
+  <a href="help.html" target="_blank" rel="noopener">Help</a>
+</nav>
+
+<main class="container">
+  <!-- ==================== WELCOME BANNER ==================== -->
+  <div id="welcomeBanner">
+    <h2>Welcome to Local Community Events!</h2>
+    <p>Connect with your neighbors and join upcoming activities.</p>
+    <p><span class="highlight">🔥 New: Summer Music Festival this weekend!</span> &nbsp;|&nbsp;
+    <span style="color: red; font-weight: bold; background: #fff2cc; padding: 0 5px;">⭐ SPECIAL OFFER: First 30 registrations get a free gift!</span></p>
+    <p class="highlight">📢 Announcement: Community yoga every Sunday at 9am.</p>
+  </div>
+
+  <!-- ==================== IMAGE GALLERY (2 rows, 3 columns) ==================== -->
+  <section id="events">
+    <h2>📸 Past Event Gallery</h2>
+    <table class="gallery-table">
+      <tr>
+        <td><img class="img-border" src="https://picsum.photos/id/104/250/160" alt="Beach party" title="Summer Beach Party" onclick="enlargeImage(this.src)"><div class="caption">🏖️ Beach Party</div></td>
+        <td><img class="img-border" src="https://picsum.photos/id/30/250/160" alt="Art workshop" title="Art & Craft" onclick="enlargeImage(this.src)"><div class="caption">🎨 Art Workshop</div></td>
+        <td><img class="img-border" src="https://picsum.photos/id/127/250/160" alt="Food festival" title="Foodie Fest" onclick="enlargeImage(this.src)"><div class="caption">🍔 Food Fest</div></td>
+      </tr>
+      <tr>
+        <td><img class="img-border" src="https://picsum.photos/id/132/250/160" alt="Jazz night" title="Jazz in Park" onclick="enlargeImage(this.src)"><div class="caption">🎷 Jazz Night</div></td>
+        <td><img class="img-border" src="https://picsum.photos/id/186/250/160" alt="Charity run" title="5K Run" onclick="enlargeImage(this.src)"><div class="caption">🏃 Charity Run</div></td>
+        <td><img class="img-border" src="https://picsum.photos/id/155/250/160" alt="Tech meetup" title="Tech Meetup" onclick="enlargeImage(this.src)"><div class="caption">💻 Tech Meetup</div></td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ==================== EVENT REGISTRATION FORM ==================== -->
+  <section id="registration">
+    <h2>📝 Event Registration</h2>
+    <form id="regForm">
+      <label>Full Name *</label>
+      <input type="text" id="regName" placeholder="Enter your full name" autofocus required>
+
+      <label>Email *</label>
+      <input type="email" id="regEmail" placeholder="you@example.com" required>
+
+      <label>Event Date *</label>
+      <input type="date" id="regDate" required>
+
+      <label>Event Type *</label>
+      <select id="regEventType" required>
+        <option value="">-- Select an event --</option>
+        <option value="Beach Party">Beach Party</option>
+        <option value="Art Workshop">Art Workshop</option>
+        <option value="Food Fest">Food Fest</option>
+        <option value="Jazz Night">Jazz Night</option>
+        <option value="Charity Run">Charity Run</option>
+      </select>
+
+      <label>Message (optional)</label>
+      <textarea id="regMessage" rows="2" placeholder="Any special requests?"></textarea>
+
+      <button type="submit">Register Now</button>
+      <output id="regOutput" class="output-msg"></output>
+    </form>
+  </section>
+
+  <!-- ==================== FEEDBACK & EVENT HANDLING ==================== -->
+  <section id="feedback">
+    <h2>💬 Event Feedback</h2>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 220px;">
+        <label>📞 Phone Number</label>
+        <input type="tel" id="phoneFeedback" placeholder="+1 555 123 4567" onblur="validatePhone()">
+        <div id="phoneError" class="error-msg"></div>
+
+        <label>🎟️ Event Type (fee)</label>
+        <select id="feeEventSelect" onchange="updateFeeDisplay()">
+          <option value="Beach Party|5">Beach Party - $5</option>
+          <option value="Art Workshop|10">Art Workshop - $10</option>
+          <option value="Food Fest|12">Food Fest - $12</option>
+          <option value="Jazz Night|8">Jazz Night - $8</option>
+          <option value="Charity Run|15">Charity Run - $15</option>
+        </select>
+        <div id="feeDisplay" class="fee-box">💰 Fee: $5</div>
+
+        <label>💬 Your Feedback</label>
+        <textarea id="feedbackText" rows="3" maxlength="200" placeholder="Share your experience..."></textarea>
+        <div class="char-counter">Characters: <span id="charCount">0</span>/200</div>
+
+        <button id="feedbackSubmitBtn">Submit Feedback</button>
+        <div id="feedbackResult" class="output-msg" style="margin-top: 15px;"></div>
+      </div>
+      <div style="flex: 1; background: #fafcff; padding: 12px; border-radius: 8px;">
+        <p><strong>Note:</strong><br>
+        • Click any gallery image to enlarge (onclick).<br>
+        • Phone validation on blur.<br>
+        • Fee updates on change.<br>
+        • Character counter on key events.<br>
+        • Submit button shows confirmation dialog.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROMO VIDEO + ONCANPLAY (VIDEO WILL PLAY) ==================== -->
+  <section id="videoSection">
+    <h2>🎬 Event Promo Video</h2>
+    <video id="promoVideo" width="100%" controls>
+      <!-- Using a guaranteed working public sample video from W3Schools -->
+      <source src="C:\Users\Mohanpriya\OneDrive\Desktop\dnupskill\DN_module1_html\4972504-hd_1920_1080_30fps.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <p id="videoMsg" style="margin-top: 12px; background: #eef2fa; padding: 8px; border-radius: 6px;">⏳ Video status: loading...</p>
+  </section>
+
+  <!-- ==================== LOCALSTORAGE / SESSIONSTORAGE PREFERENCES ==================== -->
+  <section id="storagePrefs">
+    <h2>💾 Save Preferences</h2>
+    <p>Selected event type (in registration form) is saved in localStorage and restored after reload.</p>
+    <button id="clearPrefsBtn">Clear Preferences (localStorage + sessionStorage)</button>
+    <div id="storageMsg" style="margin-top: 12px; font-size: 14px;"></div>
+  </section>
+
+  <!-- ==================== GEOLOCATION ==================== -->
+  <section id="geolocationSec">
+    <h2>📍 Find Nearby Events</h2>
+    <button id="geoBtn">Find Nearby Events (High Accuracy)</button>
+    <div id="geoResult" class="geo-result">Click the button to get your location.</div>
+  </section>
+
+  <!-- ==================== CONTACT SECTION ==================== -->
+  <section id="contact">
+    <h2>📞 Contact Us</h2>
+    <p>Email: info@communityportal.com</p>
+    <p>Phone: +1 (800) 123-4567</p>
+    <p>Address: 123 Main Street, Hometown</p>
+    <p>Follow us: Facebook | Instagram | Twitter</p>
+  </section>
+</main>
+
+<script>
+  // ========== 1. IMAGE ENLARGE (onclick) ==========
+  function enlargeImage(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    modal.style.display = 'flex';
+    modalImg.src = src;
+    console.log(`[Image] Enlarged: ${src}`);
+  }
+  function closeModal() {
+    document.getElementById('imageModal').style.display = 'none';
+    console.log("Modal closed");
+  }
+
+  // ========== 2. REGISTRATION FORM: required validation + output ==========
+  const regForm = document.getElementById('regForm');
+  const regOutput = document.getElementById('regOutput');
+  regForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const date = document.getElementById('regDate').value;
+    const eventType = document.getElementById('regEventType').value;
+    if (!name || !email || !date || !eventType) {
+      regOutput.innerText = "❌ Please fill all required fields (Name, Email, Date, Event Type).";
+      console.log("[Reg] Validation failed");
+      return;
+    }
+    regOutput.innerText = `✅ Registration confirmed! ${name}, you are registered for "${eventType}" on ${date}. A confirmation email sent to ${email}.`;
+    console.log(`[Reg] Success: ${name} -> ${eventType}`);
+  });
+
+  // ========== 3. FEEDBACK HANDLING ==========
+  function validatePhone() {
+    const phone = document.getElementById('phoneFeedback').value.trim();
+    const errorDiv = document.getElementById('phoneError');
+    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{8,20}$/;
+    if (phone && !phoneRegex.test(phone)) {
+      errorDiv.innerText = "⚠️ Please enter a valid phone number (digits, +, spaces allowed).";
+      console.log("[Phone] Invalid");
+      return false;
+    } else {
+      errorDiv.innerText = "";
+      return true;
+    }
+  }
+  function updateFeeDisplay() {
+    const select = document.getElementById('feeEventSelect');
+    const fee = select.value.split('|')[1];
+    document.getElementById('feeDisplay').innerHTML = `💰 Fee: $${fee}`;
+    console.log(`[Fee] Updated to $${fee}`);
+  }
+  const feedbackText = document.getElementById('feedbackText');
+  const charSpan = document.getElementById('charCount');
+  feedbackText.addEventListener('keyup', function() {
+    charSpan.innerText = this.value.length;
+    console.log(`[KeyEvent] Char count: ${this.value.length}`);
+  });
+  charSpan.innerText = feedbackText.value.length;
+  const feedbackSubmit = document.getElementById('feedbackSubmitBtn');
+  const feedbackResult = document.getElementById('feedbackResult');
+  feedbackSubmit.onclick = () => {
+    const phoneValid = validatePhone();
+    if (!phoneValid) {
+      feedbackResult.innerText = "❌ Please fix the phone number.";
+      return;
+    }
+    const select = document.getElementById('feeEventSelect');
+    const eventName = select.options[select.selectedIndex].text;
+    const msg = feedbackText.value.trim();
+    const confirmOK = confirm(`Submit feedback for "${eventName}"?\nMessage: "${msg.substring(0,80)}"`);
+    if (confirmOK) {
+      feedbackResult.innerText = `✨ Thank you! Feedback for ${eventName} recorded.`;
+      console.log(`[Feedback] Submitted for ${eventName}`);
+    } else {
+      feedbackResult.innerText = "❌ Feedback cancelled.";
+      console.log("[Feedback] Cancelled");
+    }
+  };
+
+  // ========== 4. VIDEO: oncanplay event (FIXED – video will play) ==========
+  const video = document.getElementById('promoVideo');
+  const videoMsg = document.getElementById('videoMsg');
+  video.addEventListener('canplay', () => {
+    videoMsg.innerHTML = "✅ Video ready to play! Press ▶️ to watch.";
+    console.log("[Video] oncanplay triggered - ready");
+  });
+  video.addEventListener('loadstart', () => {
+    videoMsg.innerHTML = "⏳ Loading video...";
+  });
+  // If video fails to load for any reason, show a fallback message (not required, but helpful)
+  video.addEventListener('error', () => {
+    videoMsg.innerHTML = "⚠️ Video failed to load. Check your internet connection.";
+    console.log("[Video] Error loading source");
+  });
+
+  // ========== 5. LOCALSTORAGE: save/restore event type ==========
+  const regEventSelect = document.getElementById('regEventType');
+  function saveEventType() {
+    const selected = regEventSelect.value;
+    if (selected) {
+      localStorage.setItem('preferredEventType', selected);
+      console.log(`[localStorage] Saved: ${selected}`);
+    }
+  }
+  regEventSelect.addEventListener('change', saveEventType);
+  function restoreEventType() {
+    const saved = localStorage.getItem('preferredEventType');
+    if (saved) {
+      for (let i = 0; i < regEventSelect.options.length; i++) {
+        if (regEventSelect.options[i].value === saved) {
+          regEventSelect.selectedIndex = i;
+          console.log(`[localStorage] Restored: ${saved}`);
+          break;
+        }
+      }
+    }
+  }
+  restoreEventType();
+
+  // ========== 6. CLEAR PREFERENCES (localStorage + sessionStorage) ==========
+  const clearBtn = document.getElementById('clearPrefsBtn');
+  const storageMsg = document.getElementById('storageMsg');
+  clearBtn.addEventListener('click', () => {
+    localStorage.removeItem('preferredEventType');
+    sessionStorage.clear();
+    storageMsg.innerText = "✓ localStorage & sessionStorage cleared.";
+    console.log("[Storage] Cleared both storages");
+    setTimeout(() => { storageMsg.innerText = ""; }, 2000);
+    regEventSelect.selectedIndex = 0;
+  });
+  sessionStorage.setItem('demo', 'visited');
+
+  // ========== 7. GEOLOCATION (high accuracy, errors) ==========
+  const geoBtn = document.getElementById('geoBtn');
+  const geoResult = document.getElementById('geoResult');
+  geoBtn.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      geoResult.innerHTML = "❌ Geolocation not supported by browser.";
+      console.log("[Geo] Not supported");
+      return;
+    }
+    geoResult.innerHTML = "📍 Requesting location with high accuracy...";
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        geoResult.innerHTML = `✅ Location obtained (High Accuracy)<br>Latitude: ${lat.toFixed(6)}<br>Longitude: ${lng.toFixed(6)}<br>🌟 Nearby events: Summer Fair (0.3 mi), Jazz Club (0.7 mi).`;
+        console.log(`[Geo] Success: lat=${lat}, lng=${lng}`);
+      },
+      (error) => {
+        let errMsg = "";
+        switch(error.code) {
+          case error.PERMISSION_DENIED: errMsg = "❌ Permission denied. Allow location access."; break;
+          case error.TIMEOUT: errMsg = "⏱️ Timeout – could not get position."; break;
+          case error.POSITION_UNAVAILABLE: errMsg = "📡 Position unavailable."; break;
+          default: errMsg = "Unknown geolocation error.";
+        }
+        geoResult.innerHTML = `⚠️ ${errMsg}`;
+        console.log(`[Geo Error] ${errMsg}`);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  });
+
+  // ========== 8. BEFORE UNLOAD WARNING ==========
+  window.addEventListener('beforeunload', (e) => {
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const date = document.getElementById('regDate').value;
+    if (name !== "" || email !== "" || date !== "") {
+      e.preventDefault();
+      e.returnValue = "You have started filling the registration form. Leaving will lose your data.";
+      console.log("[BeforeUnload] Warning triggered");
+      return e.returnValue;
+    }
+  });
+
+  console.log("Portal loaded – all features active (video with working source, geolocation, etc.)");
+</script>
+</body>
+</html>
