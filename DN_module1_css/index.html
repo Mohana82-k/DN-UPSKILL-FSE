@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Community Event Portal | CSS3 Demo</title>
+  
+  <!-- ========== INTERNAL STYLESHEET ========== -->
+  <style>
+    /* Embedded style: sets body background fallback color */
+    body {
+      background: #eef2f5;  /* fallback color if external CSS fails */
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  
+  <!-- ========== EXTERNAL STYLESHEET ========== -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ========== INLINE STYLE EXAMPLE ========== -->
+  <h1 style="color: red; text-align: center;">⭐ SPECIAL ANNOUNCEMENT ⭐</h1>
+  <p style="text-align: center; font-weight: bold;">Inline style makes this heading red – just as required!</p>
+
+  <!-- main header with ID selector -->
+  <header id="mainHeader">
+    <h1>🌈 Local Community Event Portal</h1>
+    <p>Connect, celebrate, and grow together</p>
+  </header>
+
+  <!-- navigation menu with list styling (no bullets, custom links) -->
+  <nav>
+    <ul class="nav-menu">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#bulletin">Community Bulletin</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <!-- ========== EVENT CARDS (box model demonstration) ========== -->
+    <section id="events">
+      <h2>📅 Upcoming Events</h2>
+      <div class="events-grid">
+        <div class="eventCard">
+          <h3>🎨 Art & Wine Night</h3>
+          <p>June 15, 7:00pm – Explore local art while enjoying fine wine.</p>
+          <a href="#" class="btn">Learn More</a>
+        </div>
+        <div class="eventCard">
+          <h3>🎵 Jazz in the Park</h3>
+          <p>June 22, 5:00pm – Free outdoor concert, bring your picnic blanket.</p>
+          <a href="#" class="btn">Learn More</a>
+        </div>
+        <div class="eventCard">
+          <h3>🏃 Charity Fun Run</h3>
+          <p>June 30, 8:00am – 5K run for a good cause.</p>
+          <a href="#" class="btn">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TABLE WITH ZEBRA STRIPING ========== -->
+    <section id="schedule">
+      <h2>📊 Weekly Event Schedule</h2>
+      <table class="events-table">
+        <thead>
+          <tr><th>Day</th><th>Event</th><th>Time</th><th>Location</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Monday</td><td>Yoga in the Park</td><td>9:00 AM</td><td>Central Park</td></tr>
+          <tr><td>Wednesday</td><td>Book Club</td><td>6:00 PM</td><td>Library</td></tr>
+          <tr><td>Friday</td><td>Live Music</td><td>7:30 PM</td><td>Plaza Stage</td></tr>
+          <tr><td>Saturday</td><td>Farmers Market</td><td>8:00 AM</td><td>Main Street</td></tr>
+          <tr><td>Sunday</td><td>Family Movie Night</td><td>6:00 PM</td><td>Community Center</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ========== MULTI-COLUMN NEWSPAPER STYLE ========== -->
+    <section id="bulletin">
+      <h2>📰 Community Bulletin</h2>
+      <div class="multi-column">
+        <p>The annual Summer Festival returns this July! Food trucks, live bands, and a kids' zone will fill the downtown area. Volunteers are needed – sign up online. The community garden project is looking for green thumbs. Contact the council to reserve a plot. The library will host a digital skills workshop every Tuesday in June. Free for all residents. The city council approved a new bike lane on Elm Street. Construction begins in August. Also, the recycling center will open on Saturdays from 9am to 1pm. Let's keep our neighborhood clean. A new dog park is planned for the west side. Donations are welcome. The local history museum has a new exhibit on the 1920s. Open daily except Mondays.</p>
+      </div>
+    </section>
+
+    <!-- ========== BOX MODEL DEMONSTRATION: visibility vs display ========== -->
+    <section id="boxmodel-demo">
+      <h2>📦 Box Model & Visibility Examples</h2>
+      <div class="demo-box">
+        <div class="visible-box">This box is visible (display: block)</div>
+        <div class="hidden-visibility">This box uses visibility: hidden (space remains)</div>
+        <div class="hidden-display">This box uses display: none (space collapsed)</div>
+        <div class="outline-box">This box has an outline on focus (click inside)</div>
+      </div>
+      <p><em>Inspect with DevTools to see the difference between <code>visibility: hidden</code> and <code>display: none</code>.</em></p>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <p>📧 community@portal.com | 📞 (555) 123-4567</p>
+    <p>© 2025 Local Community Event Portal</p>
+  </footer>
+</body>
+</html>
