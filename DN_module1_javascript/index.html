@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Community Event Portal | JS Complete</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      padding: 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header {
+      background: #1e3a5f;
+      color: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    h2 { margin: 1.5rem 0 1rem; border-left: 4px solid #2c7da0; padding-left: 12px; }
+    .filters {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    select, input {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+    }
+    #eventsContainer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .event-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      width: 280px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .event-card button {
+      background: #2c7da0;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+    .event-card button.cancel { background: #a12a2a; margin-left: 8px; }
+    form {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+    .form-group { margin-bottom: 1rem; }
+    label { font-weight: bold; display: block; }
+    input, select { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ccc; }
+    button { background: #1e3a5f; color: white; padding: 8px 20px; border: none; border-radius: 30px; cursor: pointer; }
+    .error { color: red; font-size: 0.8rem; }
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #1e3a5f;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    footer {
+      background: #1e2f3c;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 40px;
+    }
+    @media (max-width: 768px) { .event-card { width: 90%; } }
+  </style>
+  <!-- jQuery for task 14 -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🌟 Local Community Event Portal</h1>
+    <p>Discover, register, and enjoy events near you</p>
+  </header>
+
+  <!-- Dropdown filters (always visible) -->
+  <div class="filters">
+    <label>Filter by category:</label>
+    <select id="categoryFilter">
+      <option value="all">All Categories</option>
+      <option value="music">Music</option>
+      <option value="art">Art</option>
+      <option value="food">Food</option>
+      <option value="sports">Sports</option>
+    </select>
+    <label>Quick search:</label>
+    <input type="text" id="searchInput" placeholder="Type event name...">
+    <span id="searchInfo"></span>
+  </div>
+
+  <!-- Events will appear here -->
+  <div id="eventsContainer">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Registration Form with dropdown (will be populated by JS) -->
+  <h2>📝 Register for an Event</h2>
+  <form id="registrationForm">
+    <div class="form-group">
+      <label>Full Name *</label>
+      <input type="text" id="regName" required>
+      <div class="error" id="nameError"></div>
+    </div>
+    <div class="form-group">
+      <label>Email *</label>
+      <input type="email" id="regEmail" required>
+      <div class="error" id="emailError"></div>
+    </div>
+    <div class="form-group">
+      <label>Select Event *</label>
+      <select id="regEventSelect" required>
+        <option value="">-- Loading events --</option>
+      </select>
+      <div class="error" id="eventError"></div>
+    </div>
+    <button type="submit">Register Now</button>
+    <div id="formMessage"></div>
+  </form>
+
+  <!-- Seat management demo (task 2) -->
+  <div style="background:#eef2fa; padding:1rem; border-radius:12px; margin-top:20px;">
+    <h3>🎫 Seat Management Demo</h3>
+    <p>Event: <strong>Summer Concert</strong> | Available Seats: <span id="seatCount">50</span></p>
+    <button id="incSeat">+ Register (decrease seat)</button>
+    <button id="decSeat">- Cancel (increase seat)</button>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Local Community Portal | JavaScript + jQuery Demo</p>
+  </footer>
+</div>
+</body>
+</html>
